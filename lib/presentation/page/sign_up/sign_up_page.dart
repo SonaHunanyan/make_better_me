@@ -45,7 +45,8 @@ class _SignUpState extends State<SignUpPage> {
   }
 
   Widget get _render => Scaffold(
-          body: Center(
+      appBar: AppBar(),
+      body: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15 * grw(context)),
           child: Column(
