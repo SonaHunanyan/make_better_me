@@ -13,4 +13,5 @@ class AppColors {
   static const blackCoral = Color(0xFF5D5D6D);
   static const antiFlashWhite = Color(0xFFF3F3F3);
   static const spanishGrey = Color(0xFF979797);
+  static const blue = Colors.blue;
 }
