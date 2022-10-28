@@ -12,4 +12,22 @@ class UserRepository implements IUserRepository {
       throw Exception('Fail to add user $error');
     });
   }
+
+  @override
+  Future<User?> logIn(String username, String password) async {
+    final userQuerySnapshot = await _collection
+        .where('username', isEqualTo: username)
+        .where('password', isEqualTo: password)
+        .get()
+        .catchError((error) {
+      throw Exception('Fail to get products $error');
+    });
+
+    final userJson = userQuerySnapshot.docs;
+    if (userJson.isEmpty) {
+      return null;
+    }
+    final user = User.fromJson(userJson.first.data());
+    return user;
+  }
 }

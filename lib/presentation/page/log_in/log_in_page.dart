@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:make_better_me/data/repository/user_repository.dart';
 import 'package:make_better_me/presentation/constant/constans.dart';
 import 'package:make_better_me/presentation/extension/app_theme.dart';
+import 'package:make_better_me/presentation/modal/error_dialog.dart';
 import 'package:make_better_me/presentation/page/log_in/bloc/login_state.dart';
 import 'package:make_better_me/presentation/themes/app_strings.dart';
 import 'package:make_better_me/presentation/widget/app_text_field.dart';
@@ -24,7 +26,7 @@ class _LogInState extends State<LogInPage> {
   final _passwordController = TextEditingController();
   final _usernameController = TextEditingController();
 
-  final _loginBloc = LoginBloc();
+  final _loginBloc = LoginBloc(userRepository: UserRepository());
 
   @override
   void dispose() {
@@ -111,6 +113,13 @@ extension _LogInStateAddition on _LogInState {
     if (state is FormValidState) {
       _usernameErrorText = null;
       _passwordErrorText = null;
+      _loginBloc.add(LogIn(
+          password: _passwordController.text,
+          username: _usernameController.text));
+    }
+    if (state is LogInSuccessfulyState) {}
+    if (state is LogInFailState) {
+      showErrorDialog(context, message: AppStrings.userDoesntExist);
     }
   }
 }

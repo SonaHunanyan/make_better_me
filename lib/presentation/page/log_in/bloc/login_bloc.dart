@@ -1,4 +1,6 @@
+import 'package:flutter/physics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:make_better_me/domain/repository/user_repository.dart';
 import 'package:make_better_me/presentation/util/validator.dart';
 import '../../../extension/bloc_transform.dart';
 
@@ -6,13 +8,16 @@ import 'login_event.dart';
 import 'login_state.dart';
 
 class LoginBloc extends Bloc<LogInEvent, LogInState> {
-  LoginBloc() : super(LogInInitialState()) {
+  LoginBloc({required this.userRepository}) : super(LogInInitialState()) {
     on<UsernameValidationEvent>(_onUsernameValidationEvent,
         transformer: debounce(const Duration(milliseconds: 500)));
     on<PasswordValidationEvent>(_onPasswordValidationEvent,
         transformer: debounce(const Duration(milliseconds: 500)));
     on<FormValidationEvent>(_onFormValidationEvent);
+    on<LogIn>(_onLogInEvent);
   }
+
+  final IUserRepository userRepository;
 
   Future<void> _onUsernameValidationEvent(
       UsernameValidationEvent event, Emitter<LogInState> emit) async {
@@ -47,5 +52,14 @@ class LoginBloc extends Bloc<LogInEvent, LogInState> {
     emit(FormInvalidState(
         usernameErrorMessage: usernameErrorText,
         passwordErrorMessage: passwordErrorText));
+  }
+
+  Future<void> _onLogInEvent(LogIn event, Emitter<LogInState> emit) async {
+    final user = await userRepository.logIn(event.username, event.password);
+    if (user == null) {
+      emit(LogInFailState());
+      return;
+    }
+    emit(LogInSuccessfulyState(user));
   }
 }
