@@ -4,18 +4,18 @@ class User extends Equatable {
   const User(
       {required this.id,
       required this.name,
-      required this.login,
+      required this.username,
       required this.password});
   final String id;
   final String name;
-  final String login;
+  final String username;
   final String password;
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'] as String,
       name: json['name'] as String,
-      login: json['login'] as String,
+      username: json['username'] as String,
       password: json['password'] as String,
     );
   }
@@ -24,7 +24,7 @@ class User extends Equatable {
     return <String, dynamic>{
       'id': id,
       'name': name,
-      'login': login,
+      'username': username,
       'password': password,
     };
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:make_better_me/presentation/constant/constans.dart';
+import 'package:make_better_me/presentation/page/sign_up/sign_up_page.dart';
 import 'package:make_better_me/presentation/themes/app_strings.dart';
 import 'package:make_better_me/presentation/widget/rounded_button.dart';
 
@@ -19,7 +20,10 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RoundedButton(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const SignUpPage()));
+            },
             title: AppStrings.signUp,
           ),
           Padding(
