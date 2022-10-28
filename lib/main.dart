@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'data/preferenc/shared_prefs.dart';
-import 'presentation/page/splash/splash_page.dart';
+import 'presentation/page/home/home_page.dart';
 import 'presentation/themes/light_theme.dart';
 
 Future<void> run() async {
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: lightTheme,
       darkTheme: lightTheme,
-      home: const SplashPage(),
+      home: const HomePage(),
     );
   }
 }
