@@ -6,4 +6,5 @@ class AppStrings {
   static const passwordDidNotMatch = 'Password did not match';
   static const name = 'Name';
   static const username = 'Username';
+  static const somethingWentWrong = 'Something went wrong';
 }

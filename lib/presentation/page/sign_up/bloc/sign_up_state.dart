@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:uuid/uuid.dart';
 
 abstract class SignUpState extends Equatable {
   @override
@@ -47,4 +48,12 @@ class FormInvalidState extends SignUpState {
   @override
   List<Object?> get props =>
       [passwordErrorMessage, usernameErrorMessage, nameErrorMessage];
+}
+
+class UserCreatedSuccessfuly extends SignUpState {}
+
+class UserCreationFail extends SignUpState {
+  final _id = const Uuid().v4();
+  @override
+  List<Object?> get props => [_id];
 }

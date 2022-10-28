@@ -1,11 +1,14 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:make_better_me/domain/entity/user.dart';
+import 'package:make_better_me/domain/repository/user_repository.dart';
 import 'package:make_better_me/presentation/page/sign_up/bloc/sign_up_event.dart';
 import 'package:make_better_me/presentation/page/sign_up/bloc/sign_up_state.dart';
 import 'package:make_better_me/presentation/util/validator.dart';
+import 'package:uuid/uuid.dart';
 import '../../../extension/bloc_transform.dart';
 
 class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
-  SignUpBloc() : super(SignUpInitialState()) {
+  SignUpBloc({required this.userRepository}) : super(SignUpInitialState()) {
     on<UsernameValidationEvent>(_onUsernameValidationEvent,
         transformer: debounce(const Duration(milliseconds: 500)));
     on<NameValidationEvent>(_onNameValidationEvent,
@@ -13,7 +16,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<PasswordValidationEvent>(_onPasswordValidationEvent,
         transformer: debounce(const Duration(milliseconds: 500)));
     on<FormValidationEvent>(_onFormValidationEvent);
+    on<CreateUserEvent>(_onCreateUserEvent);
   }
+
+  final IUserRepository userRepository;
 
   Future<void> _onUsernameValidationEvent(
       UsernameValidationEvent event, Emitter<SignUpState> emit) async {
@@ -63,5 +69,21 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         nameErrorMessage: nameErrorText,
         usernameErrorMessage: usernameErrorText,
         passwordErrorMessage: passwordErrorText));
+  }
+
+  Future<void> _onCreateUserEvent(
+      CreateUserEvent event, Emitter<SignUpState> emit) async {
+    try {
+      final id = const Uuid().v4();
+      final user = User(
+          id: id,
+          name: event.name,
+          username: event.username,
+          password: event.password);
+      await userRepository.addUser(user);
+      emit(UserCreatedSuccessfuly());
+    } catch (e) {
+      emit(UserCreationFail());
+    }
   }
 }

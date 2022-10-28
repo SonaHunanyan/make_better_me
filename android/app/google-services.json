@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "171002728653",
+    "project_id": "make-better-me",
+    "storage_bucket": "make-better-me.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:171002728653:android:55f7faa99b9ccb9c4e5984",
+        "android_client_info": {
+          "package_name": "com.example.make_better_me"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "171002728653-8t8ggmo5dotp553sv7omebjs2fnu6e9h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXv2A-A4Bj8J6JYyYZJHtwYpvLS07Muc0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "171002728653-8t8ggmo5dotp553sv7omebjs2fnu6e9h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

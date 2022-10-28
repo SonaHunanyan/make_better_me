@@ -108,7 +108,7 @@ extension _LogInStateAddition on _LogInState {
     if (state is PasswordValidatedState) {
       _passwordErrorText = null;
     }
-    if (state is FormValidationEvent) {
+    if (state is FormValidState) {
       _usernameErrorText = null;
       _passwordErrorText = null;
     }

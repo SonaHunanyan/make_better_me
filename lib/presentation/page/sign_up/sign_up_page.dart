@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:make_better_me/data/repository/user_repository.dart';
 import 'package:make_better_me/presentation/constant/constans.dart';
 import 'package:make_better_me/presentation/extension/app_theme.dart';
+import 'package:make_better_me/presentation/modal/error_dialog.dart';
 import 'package:make_better_me/presentation/page/sign_up/bloc/sign_up_event.dart';
 import 'package:make_better_me/presentation/page/sign_up/bloc/sign_up_state.dart';
 import 'package:make_better_me/presentation/themes/app_strings.dart';
@@ -25,7 +27,7 @@ class _SignUpState extends State<SignUpPage> {
   final _passwordController = TextEditingController();
   final _usernameController = TextEditingController();
 
-  final _signUpBloc = SignUpBloc();
+  final _signUpBloc = SignUpBloc(userRepository: UserRepository());
 
   @override
   void dispose() {
@@ -124,10 +126,18 @@ extension _SignUpStateAddition on _SignUpState {
     if (state is PasswordValidatedState) {
       _passwordErrorText = null;
     }
-    if (state is FormValidationEvent) {
+    if (state is FormValidState) {
       _nameErrorText = null;
       _usernameErrorText = null;
       _passwordErrorText = null;
+      _signUpBloc.add(CreateUserEvent(
+          name: _nameController.text,
+          password: _passwordController.text,
+          username: _usernameController.text));
+    }
+    if (state is UserCreatedSuccessfuly) {}
+    if (state is UserCreationFail) {
+      showErrorDialog(context);
     }
   }
 }

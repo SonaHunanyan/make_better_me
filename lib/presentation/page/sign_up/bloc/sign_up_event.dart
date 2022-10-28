@@ -1,4 +1,3 @@
-
 abstract class SignUpEvent {}
 
 class NameValidationEvent extends SignUpEvent {
@@ -18,6 +17,14 @@ class PasswordValidationEvent extends SignUpEvent {
 
 class FormValidationEvent extends SignUpEvent {
   FormValidationEvent(
+      {required this.name, required this.password, required this.username});
+  final String name;
+  final String username;
+  final String password;
+}
+
+class CreateUserEvent extends SignUpEvent {
+  CreateUserEvent(
       {required this.name, required this.password, required this.username});
   final String name;
   final String username;
