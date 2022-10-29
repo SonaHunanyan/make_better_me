@@ -6,6 +6,7 @@ import 'package:make_better_me/domain/entity/user.dart';
 import 'package:make_better_me/presentation/constant/constans.dart';
 import 'package:make_better_me/presentation/mixin/state_addition_mixin.dart';
 import 'package:make_better_me/presentation/modal/error_dialog.dart';
+import 'package:make_better_me/presentation/page/achevement/achievement_page.dart';
 import 'package:make_better_me/presentation/page/user_info.dart/bloc/user_info_bloc.dart';
 import 'package:make_better_me/presentation/page/user_info.dart/bloc/user_info_event.dart';
 import 'package:make_better_me/presentation/page/user_info.dart/bloc/user_info_state.dart';
@@ -102,32 +103,38 @@ class _UserInfoState extends State<UserInfoPage> with StateAddition {
   Widget _renderAchievement(int index) {
     final achievement = _achievements[index];
     final isGreyOut = !_user.achievementsId.contains(achievement.id);
-    return Container(
-        alignment: Alignment.center,
-        height: 200 * grh(context),
-        foregroundDecoration: isGreyOut
-            ? const BoxDecoration(
-                color: AppColors.grey,
-                backgroundBlendMode: BlendMode.saturation,
-              )
-            : null,
-        decoration: BoxDecoration(
-            border: Border.all(color: AppColors.blue),
-            borderRadius: BorderRadius.circular(20)),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text(
-            achievement.title,
-            style: context.themeData.textTheme.headline1
-                ?.copyWith(color: AppColors.blue),
-          ),
-          Padding(
-              padding: EdgeInsets.only(top: 10 * grh(context)),
-              child: Image.network(
-                achievement.image,
-                width: 100 * grw(context),
-                height: 100 * grw(context),
-              ))
-        ]));
+    return GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => AchievementPage(achievement)));
+        },
+        child: Container(
+            alignment: Alignment.center,
+            height: 200 * grh(context),
+            foregroundDecoration: isGreyOut
+                ? const BoxDecoration(
+                    color: AppColors.grey,
+                    backgroundBlendMode: BlendMode.saturation,
+                  )
+                : null,
+            decoration: BoxDecoration(
+                border: Border.all(color: AppColors.blue),
+                borderRadius: BorderRadius.circular(20)),
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                achievement.title,
+                style: context.themeData.textTheme.headline1
+                    ?.copyWith(color: AppColors.blue),
+              ),
+              Padding(
+                  padding: EdgeInsets.only(top: 10 * grh(context)),
+                  child: Image.network(
+                    achievement.image,
+                    width: 100 * grw(context),
+                    height: 100 * grw(context),
+                  ))
+            ])));
   }
 }
 
