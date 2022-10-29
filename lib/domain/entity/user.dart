@@ -19,7 +19,9 @@ class User extends Equatable {
       name: json['name'] as String,
       username: json['username'] as String,
       password: json['password'] as String,
-      achievementsId: json['achievementsId']??[],
+      achievementsId: (json['achievementsId'] as List)
+          .map((item) => item as String)
+          .toList(),
     );
   }
 
