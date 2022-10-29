@@ -62,14 +62,17 @@ class _UserInfoState extends State<UserInfoPage> with StateAddition {
         child: _isLoading
             ? _renderLoadingIndicator
             : Padding(
-                padding: EdgeInsets.only(top: 150 * grh(context)),
+                padding: EdgeInsets.only(top: 30 * grh(context)),
                 child: Column(
                   children: [
-                    Text(
-                      AppStrings.steps,
-                      style: context.themeData.textTheme.headline2
-                          ?.copyWith(color: AppColors.blue),
-                    ),
+                    _renderLogOut,
+                    Padding(
+                        padding: EdgeInsets.only(top: 50 * grh(context)),
+                        child: Text(
+                          AppStrings.steps,
+                          style: context.themeData.textTheme.headline2
+                              ?.copyWith(color: AppColors.blue),
+                        )),
                     Padding(
                       padding: EdgeInsets.only(top: 10 * grh(context)),
                       child: Text(
@@ -81,6 +84,18 @@ class _UserInfoState extends State<UserInfoPage> with StateAddition {
                   ],
                 ),
               ),
+      ));
+
+  Widget get _renderLogOut => Align(
+      alignment: Alignment.topRight,
+      child: TextButton(
+        onPressed: () {
+          Navigator.popUntil(context, (route) => route.isFirst);
+        },
+        child: Text(
+          AppStrings.logOut,
+          style: context.themeData.textTheme.bodyText2,
+        ),
       ));
 
   Widget get _renderLoadingIndicator => Container(

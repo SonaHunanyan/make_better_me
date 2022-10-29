@@ -9,4 +9,5 @@ class AppStrings {
   static const somethingWentWrong = 'Something went wrong';
   static const userDoesntExist = 'User does not exist';
   static const steps = 'Steps';
+  static const logOut = 'Log Out';
 }
