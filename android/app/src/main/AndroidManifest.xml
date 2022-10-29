@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.make_better_me">
+    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
    <application
         android:label="make_better_me"
         android:name="${applicationName}"

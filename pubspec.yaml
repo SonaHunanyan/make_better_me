@@ -42,7 +42,12 @@ dependencies:
   dio: ^4.0.6
   shared_preferences: ^2.0.15
   get_it: ^7.2.0
-
+  uuid: ^3.0.6
+  cloud_firestore: ^4.0.3
+  firebase_core: ^2.1.1
+  health: ^4.2.0
+  permission_handler: ^10.2.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
