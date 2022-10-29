@@ -30,4 +30,22 @@ class UserRepository implements IUserRepository {
     final user = User.fromJson(userJson.first.data());
     return user;
   }
+
+  @override
+  Future<void> addNewAchievement(
+      {required User user, required String achievementId}) async {
+    final userQuerySnapshot = await _collection
+        .where('id', isEqualTo: user.id)
+        .get()
+        .catchError((error) {
+      throw Exception('Fail to add new achievement $error');
+    });
+    final newAchievementList = user.achievementsId..add(achievementId);
+    final path = userQuerySnapshot.docs.first.id;
+    await _collection
+        .doc(path)
+        .update({'achievementsId': newAchievementList}).catchError((error) {
+      throw Exception(error);
+    });
+  }
 }

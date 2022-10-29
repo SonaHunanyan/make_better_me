@@ -5,11 +5,13 @@ class User extends Equatable {
       {required this.id,
       required this.name,
       required this.username,
-      required this.password});
+      required this.password,
+      this.achievementsId = const []});
   final String id;
   final String name;
   final String username;
   final String password;
+  final List<String> achievementsId;
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -17,6 +19,7 @@ class User extends Equatable {
       name: json['name'] as String,
       username: json['username'] as String,
       password: json['password'] as String,
+      achievementsId: json['achievementsId'] as List<String>,
     );
   }
 
@@ -26,6 +29,7 @@ class User extends Equatable {
       'name': name,
       'username': username,
       'password': password,
+      'achievementsId': achievementsId,
     };
   }
 
