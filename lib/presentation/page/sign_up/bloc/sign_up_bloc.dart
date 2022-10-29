@@ -86,7 +86,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           name: event.name,
           username: event.username,
           password: event.password,
-          achievementsId: [achievements.first.id]);
+          achievementsId: <String>[achievements.first.id]);
       await userRepository.addUser(user);
       emit(UserCreatedSuccessfuly(user: user));
     } catch (e) {

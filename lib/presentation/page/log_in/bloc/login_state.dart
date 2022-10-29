@@ -42,6 +42,8 @@ class LogInSuccessfulyState extends LogInState {
   final User user;
 }
 
+class LoginProcessState extends LogInState {}
+
 class LogInFailState extends LogInState {
   final _id = const Uuid().v4();
   @override

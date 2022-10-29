@@ -54,6 +54,7 @@ class LoginBloc extends Bloc<LogInEvent, LogInState> {
   }
 
   Future<void> _onLogInEvent(LogIn event, Emitter<LogInState> emit) async {
+    emit(LoginProcessState());
     final user = await userRepository.logIn(event.username, event.password);
     if (user == null) {
       emit(LogInFailState());

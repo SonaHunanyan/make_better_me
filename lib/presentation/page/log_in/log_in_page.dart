@@ -9,6 +9,7 @@ import 'package:make_better_me/presentation/page/user_info.dart/user_info_page.d
 import 'package:make_better_me/presentation/themes/app_strings.dart';
 import 'package:make_better_me/presentation/widget/app_text_field.dart';
 import 'package:make_better_me/presentation/widget/rounded_button.dart';
+import 'package:make_better_me/presentation/themes/app_colors.dart';
 
 import 'bloc/login_bloc.dart';
 import 'bloc/login_event.dart';
@@ -28,6 +29,8 @@ class _LogInState extends State<LogInPage> {
   final _usernameController = TextEditingController();
 
   final _loginBloc = LoginBloc(userRepository: UserRepository());
+
+  var _isLoading = false;
 
   @override
   void dispose() {
@@ -49,47 +52,57 @@ class _LogInState extends State<LogInPage> {
   Widget get _render => Scaffold(
         appBar: AppBar(),
         body: Center(
-            child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15 * grw(context)),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        AppStrings.logIn,
-                        style: context.themeData.textTheme.headline1,
-                      ),
-                      Padding(
-                          padding: EdgeInsets.only(top: 10 * grh(context)),
-                          child: AppTextField(
-                            labelText: AppStrings.username,
-                            errorText: _usernameErrorText,
-                            controller: _usernameController,
-                            onChange: (value) {
-                              _loginBloc.add(
-                                  UsernameValidationEvent(username: value));
-                            },
-                          )),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              top: 10 * grh(context),
-                              bottom: 20 * grh(context)),
-                          child: AppTextField(
-                            labelText: AppStrings.password,
-                            errorText: _passwordErrorText,
-                            controller: _passwordController,
-                            onChange: (value) {
-                              _loginBloc.add(
-                                  PasswordValidationEvent(password: value));
-                            },
-                          )),
-                      RoundedButton(
-                          onTap: () {
-                            _loginBloc.add(FormValidationEvent(
-                                password: _passwordController.text,
-                                username: _usernameController.text));
-                          },
-                          title: AppStrings.logIn)
-                    ]))),
+            child: _isLoading
+                ? _renderLoadingIndicator
+                : Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 15 * grw(context)),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            AppStrings.logIn,
+                            style: context.themeData.textTheme.headline1,
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(top: 10 * grh(context)),
+                              child: AppTextField(
+                                labelText: AppStrings.username,
+                                errorText: _usernameErrorText,
+                                controller: _usernameController,
+                                onChange: (value) {
+                                  _loginBloc.add(
+                                      UsernameValidationEvent(username: value));
+                                },
+                              )),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  top: 10 * grh(context),
+                                  bottom: 20 * grh(context)),
+                              child: AppTextField(
+                                labelText: AppStrings.password,
+                                errorText: _passwordErrorText,
+                                controller: _passwordController,
+                                onChange: (value) {
+                                  _loginBloc.add(
+                                      PasswordValidationEvent(password: value));
+                                },
+                              )),
+                          RoundedButton(
+                              onTap: () {
+                                _loginBloc.add(FormValidationEvent(
+                                    password: _passwordController.text,
+                                    username: _usernameController.text));
+                              },
+                              title: AppStrings.logIn)
+                        ]))),
+      );
+
+  Widget get _renderLoadingIndicator => Container(
+        alignment: Alignment.center,
+        height: 100 * grw(context),
+        width: 100 * grw(context),
+        child: const CircularProgressIndicator(color: AppColors.darkPurple),
       );
 }
 
@@ -119,13 +132,18 @@ extension _LogInStateAddition on _LogInState {
           username: _usernameController.text));
     }
     if (state is LogInSuccessfulyState) {
+      _isLoading = false;
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => UserInfoPage(
                 user: state.user,
               )));
     }
     if (state is LogInFailState) {
+      _isLoading = false;
       showErrorDialog(context, message: AppStrings.userDoesntExist);
+    }
+    if (state is LoginProcessState) {
+      _isLoading = true;
     }
   }
 }
