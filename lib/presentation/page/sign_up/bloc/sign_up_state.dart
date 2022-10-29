@@ -63,3 +63,4 @@ class UserCreationFail extends SignUpState {
   @override
   List<Object?> get props => [_id];
 }
+class UserWithTheUsernameExists extends SignUpState{}

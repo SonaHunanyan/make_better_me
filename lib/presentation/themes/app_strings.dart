@@ -10,4 +10,5 @@ class AppStrings {
   static const userDoesntExist = 'User does not exist';
   static const steps = 'Steps';
   static const logOut = 'Log Out';
+ static const userExists = 'User with this username is already exists';
 }

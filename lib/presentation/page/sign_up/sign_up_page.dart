@@ -164,5 +164,9 @@ extension _SignUpStateAddition on _SignUpState {
     if (state is UserCreationState) {
       _isLoaging = true;
     }
+    if (state is UserWithTheUsernameExists) {
+      _isLoaging = false;
+      showErrorDialog(context, message: AppStrings.userExists);
+    }
   }
 }

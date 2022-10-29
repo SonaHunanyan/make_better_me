@@ -79,6 +79,12 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       CreateUserEvent event, Emitter<SignUpState> emit) async {
     try {
       emit(UserCreationState());
+      final isUsernameAvailable =
+          await userRepository.checkUser(event.username);
+      if (isUsernameAvailable == false) {
+        emit(UserWithTheUsernameExists());
+        return;
+      }
       final id = const Uuid().v4();
       final achievements = await achievementRepository.getAchievements();
       final user = User(

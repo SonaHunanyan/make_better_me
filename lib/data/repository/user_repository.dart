@@ -48,4 +48,19 @@ class UserRepository implements IUserRepository {
       throw Exception(error);
     });
   }
+
+  @override
+  Future<bool> checkUser(String username) async {
+    final userQuerySnapshot = await _collection
+        .where('username', isEqualTo: username)
+        .get()
+        .catchError((error) {
+      throw Exception('Fail to check user $error');
+    });
+    final userJson = userQuerySnapshot.docs;
+    if (userJson.isEmpty) {
+      return true;
+    }
+    return false;
+  }
 }
