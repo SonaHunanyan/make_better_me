@@ -56,6 +56,8 @@ class UserCreatedSuccessfuly extends SignUpState {
   final User user;
 }
 
+class UserCreationState extends SignUpState {}
+
 class UserCreationFail extends SignUpState {
   final _id = const Uuid().v4();
   @override

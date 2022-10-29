@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:make_better_me/data/repository/achievement_repository.dart';
 import 'package:make_better_me/data/repository/user_repository.dart';
 import 'package:make_better_me/presentation/constant/constans.dart';
 import 'package:make_better_me/presentation/extension/app_theme.dart';
@@ -10,6 +11,7 @@ import 'package:make_better_me/presentation/page/user_info.dart/user_info_page.d
 import 'package:make_better_me/presentation/themes/app_strings.dart';
 import 'package:make_better_me/presentation/widget/app_text_field.dart';
 import 'package:make_better_me/presentation/widget/rounded_button.dart';
+import 'package:make_better_me/presentation/themes/app_colors.dart';
 
 import 'bloc/sign_up_bloc.dart';
 
@@ -28,7 +30,11 @@ class _SignUpState extends State<SignUpPage> {
   final _passwordController = TextEditingController();
   final _usernameController = TextEditingController();
 
-  final _signUpBloc = SignUpBloc(userRepository: UserRepository());
+  final _signUpBloc = SignUpBloc(
+      userRepository: UserRepository(),
+      achievementRepository: AchievementRepository());
+
+  var _isLoaging = false;
 
   @override
   void dispose() {
@@ -50,56 +56,66 @@ class _SignUpState extends State<SignUpPage> {
   Widget get _render => Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 15 * grw(context)),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                AppStrings.signUp,
-                style: context.themeData.textTheme.headline1,
+        child: _isLoaging
+            ? _renderLoadingIndicator
+            : Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15 * grw(context)),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      AppStrings.signUp,
+                      style: context.themeData.textTheme.headline1,
+                    ),
+                    AppTextField(
+                      labelText: AppStrings.name,
+                      errorText: _nameErrorText,
+                      controller: _nameController,
+                      onChange: (value) {
+                        _signUpBloc.add(NameValidationEvent(name: value));
+                      },
+                    ),
+                    Padding(
+                        padding: EdgeInsets.only(top: 10 * grh(context)),
+                        child: AppTextField(
+                          labelText: AppStrings.username,
+                          errorText: _usernameErrorText,
+                          controller: _usernameController,
+                          onChange: (value) {
+                            _signUpBloc
+                                .add(UsernameValidationEvent(username: value));
+                          },
+                        )),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: 10 * grh(context), bottom: 20 * grh(context)),
+                        child: AppTextField(
+                          labelText: AppStrings.password,
+                          errorText: _passwordErrorText,
+                          controller: _passwordController,
+                          onChange: (value) {
+                            _signUpBloc
+                                .add(PasswordValidationEvent(password: value));
+                          },
+                        )),
+                    RoundedButton(
+                        onTap: () {
+                          _signUpBloc.add(FormValidationEvent(
+                              name: _nameController.text,
+                              password: _passwordController.text,
+                              username: _usernameController.text));
+                        },
+                        title: AppStrings.signUp)
+                  ],
+                ),
               ),
-              AppTextField(
-                labelText: AppStrings.name,
-                errorText: _nameErrorText,
-                controller: _nameController,
-                onChange: (value) {
-                  _signUpBloc.add(NameValidationEvent(name: value));
-                },
-              ),
-              Padding(
-                  padding: EdgeInsets.only(top: 10 * grh(context)),
-                  child: AppTextField(
-                    labelText: AppStrings.username,
-                    errorText: _usernameErrorText,
-                    controller: _usernameController,
-                    onChange: (value) {
-                      _signUpBloc.add(UsernameValidationEvent(username: value));
-                    },
-                  )),
-              Padding(
-                  padding: EdgeInsets.only(
-                      top: 10 * grh(context), bottom: 20 * grh(context)),
-                  child: AppTextField(
-                    labelText: AppStrings.password,
-                    errorText: _passwordErrorText,
-                    controller: _passwordController,
-                    onChange: (value) {
-                      _signUpBloc.add(PasswordValidationEvent(password: value));
-                    },
-                  )),
-              RoundedButton(
-                  onTap: () {
-                    _signUpBloc.add(FormValidationEvent(
-                        name: _nameController.text,
-                        password: _passwordController.text,
-                        username: _usernameController.text));
-                  },
-                  title: AppStrings.signUp)
-            ],
-          ),
-        ),
       ));
+  Widget get _renderLoadingIndicator => Container(
+        alignment: Alignment.center,
+        height: 100 * grw(context),
+        width: 100 * grw(context),
+        child: const CircularProgressIndicator(color: AppColors.darkPurple),
+      );
 }
 
 extension _SignUpStateAddition on _SignUpState {
@@ -144,6 +160,9 @@ extension _SignUpStateAddition on _SignUpState {
     }
     if (state is UserCreationFail) {
       showErrorDialog(context);
+    }
+    if (state is UserCreationState) {
+      _isLoaging = true;
     }
   }
 }
