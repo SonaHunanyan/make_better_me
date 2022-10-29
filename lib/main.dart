@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'data/preferenc/shared_prefs.dart';
 import 'presentation/page/home/home_page.dart';
 import 'presentation/themes/light_theme.dart';
@@ -13,6 +14,8 @@ Future<void> run() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   await _init();
+
+  await Permission.activityRecognition.request();
 
   runApp(const MyApp());
 }

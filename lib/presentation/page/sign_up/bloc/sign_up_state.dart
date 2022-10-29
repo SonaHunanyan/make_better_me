@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:make_better_me/domain/entity/user.dart';
 import 'package:uuid/uuid.dart';
 
 abstract class SignUpState extends Equatable {
@@ -50,7 +51,10 @@ class FormInvalidState extends SignUpState {
       [passwordErrorMessage, usernameErrorMessage, nameErrorMessage];
 }
 
-class UserCreatedSuccessfuly extends SignUpState {}
+class UserCreatedSuccessfuly extends SignUpState {
+  UserCreatedSuccessfuly({required this.user});
+  final User user;
+}
 
 class UserCreationFail extends SignUpState {
   final _id = const Uuid().v4();

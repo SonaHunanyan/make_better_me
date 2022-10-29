@@ -5,6 +5,7 @@ import 'package:make_better_me/presentation/constant/constans.dart';
 import 'package:make_better_me/presentation/extension/app_theme.dart';
 import 'package:make_better_me/presentation/modal/error_dialog.dart';
 import 'package:make_better_me/presentation/page/log_in/bloc/login_state.dart';
+import 'package:make_better_me/presentation/page/user_info.dart/user_info_page.dart';
 import 'package:make_better_me/presentation/themes/app_strings.dart';
 import 'package:make_better_me/presentation/widget/app_text_field.dart';
 import 'package:make_better_me/presentation/widget/rounded_button.dart';
@@ -117,7 +118,12 @@ extension _LogInStateAddition on _LogInState {
           password: _passwordController.text,
           username: _usernameController.text));
     }
-    if (state is LogInSuccessfulyState) {}
+    if (state is LogInSuccessfulyState) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => UserInfoPage(
+                user: state.user,
+              )));
+    }
     if (state is LogInFailState) {
       showErrorDialog(context, message: AppStrings.userDoesntExist);
     }

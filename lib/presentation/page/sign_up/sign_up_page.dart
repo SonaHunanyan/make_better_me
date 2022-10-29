@@ -6,6 +6,7 @@ import 'package:make_better_me/presentation/extension/app_theme.dart';
 import 'package:make_better_me/presentation/modal/error_dialog.dart';
 import 'package:make_better_me/presentation/page/sign_up/bloc/sign_up_event.dart';
 import 'package:make_better_me/presentation/page/sign_up/bloc/sign_up_state.dart';
+import 'package:make_better_me/presentation/page/user_info.dart/user_info_page.dart';
 import 'package:make_better_me/presentation/themes/app_strings.dart';
 import 'package:make_better_me/presentation/widget/app_text_field.dart';
 import 'package:make_better_me/presentation/widget/rounded_button.dart';
@@ -135,7 +136,12 @@ extension _SignUpStateAddition on _SignUpState {
           password: _passwordController.text,
           username: _usernameController.text));
     }
-    if (state is UserCreatedSuccessfuly) {}
+    if (state is UserCreatedSuccessfuly) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => UserInfoPage(
+                user: state.user,
+              )));
+    }
     if (state is UserCreationFail) {
       showErrorDialog(context);
     }

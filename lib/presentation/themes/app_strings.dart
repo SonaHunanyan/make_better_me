@@ -8,4 +8,5 @@ class AppStrings {
   static const username = 'Username';
   static const somethingWentWrong = 'Something went wrong';
   static const userDoesntExist = 'User does not exist';
+  static const steps = 'Steps';
 }
