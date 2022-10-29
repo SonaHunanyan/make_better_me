@@ -92,6 +92,7 @@ class _SignUpState extends State<SignUpPage> {
                         child: AppTextField(
                           labelText: AppStrings.password,
                           errorText: _passwordErrorText,
+                          obscureText: true,
                           controller: _passwordController,
                           onChange: (value) {
                             _signUpBloc

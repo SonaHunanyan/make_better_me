@@ -83,6 +83,7 @@ class _LogInState extends State<LogInPage> {
                                 labelText: AppStrings.password,
                                 errorText: _passwordErrorText,
                                 controller: _passwordController,
+                                obscureText: true,
                                 onChange: (value) {
                                   _loginBloc.add(
                                       PasswordValidationEvent(password: value));

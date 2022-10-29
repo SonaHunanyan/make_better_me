@@ -5,21 +5,23 @@ import 'package:make_better_me/presentation/extension/app_theme.dart';
 import 'package:make_better_me/presentation/themes/app_colors.dart';
 
 class AppTextField extends StatelessWidget {
-  const AppTextField({
-    Key? key,
-    this.controller,
-    this.labelText,
-    this.errorText,
-    this.keyboardType,
-    this.onChange,
-    this.inputFormatters,
-  }) : super(key: key);
+  const AppTextField(
+      {Key? key,
+      this.controller,
+      this.labelText,
+      this.errorText,
+      this.keyboardType,
+      this.onChange,
+      this.inputFormatters,
+      this.obscureText = false})
+      : super(key: key);
   final TextEditingController? controller;
   final String? labelText;
   final String? errorText;
   final TextInputType? keyboardType;
   final Function(String)? onChange;
   final List<TextInputFormatter>? inputFormatters;
+  final bool obscureText;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,6 +32,7 @@ class AppTextField extends StatelessWidget {
             inputFormatters: inputFormatters,
             onChanged: onChange,
             controller: controller,
+            obscureText: obscureText,
             style: const TextStyle(
                 color: AppColors.darkPurple,
                 fontSize: 13,
