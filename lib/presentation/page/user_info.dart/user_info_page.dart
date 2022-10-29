@@ -58,33 +58,34 @@ class _UserInfoState extends State<UserInfoPage> with StateAddition {
   }
 
   Widget get _render => Scaffold(
-          body: Center(
-        child: _isLoading
-            ? _renderLoadingIndicator
-            : Padding(
-                padding: EdgeInsets.only(top: 30 * grh(context)),
-                child: Column(
-                  children: [
-                    _renderLogOut,
-                    Padding(
-                        padding: EdgeInsets.only(top: 50 * grh(context)),
-                        child: Text(
-                          AppStrings.steps,
-                          style: context.themeData.textTheme.headline2
-                              ?.copyWith(color: AppColors.blue),
-                        )),
-                    Padding(
-                      padding: EdgeInsets.only(top: 10 * grh(context)),
-                      child: Text(
-                        _steps.toString(),
-                        style: context.themeData.textTheme.headline1,
-                      ),
+      body: Center(
+          child: _isLoading
+              ? _renderLoadingIndicator
+              : SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 30 * grh(context)),
+                    child: Column(
+                      children: [
+                        _renderLogOut,
+                        Padding(
+                            padding: EdgeInsets.only(top: 50 * grh(context)),
+                            child: Text(
+                              AppStrings.steps,
+                              style: context.themeData.textTheme.headline2
+                                  ?.copyWith(color: AppColors.blue),
+                            )),
+                        Padding(
+                          padding: EdgeInsets.only(top: 10 * grh(context)),
+                          child: Text(
+                            _steps.toString(),
+                            style: context.themeData.textTheme.headline1,
+                          ),
+                        ),
+                        _renderAchievements
+                      ],
                     ),
-                    _renderAchievements
-                  ],
-                ),
-              ),
-      ));
+                  ),
+                )));
 
   Widget get _renderLogOut => Align(
       alignment: Alignment.topRight,
@@ -105,18 +106,16 @@ class _UserInfoState extends State<UserInfoPage> with StateAddition {
         child: const CircularProgressIndicator(color: AppColors.darkPurple),
       );
 
-  Widget get _renderAchievements => Expanded(
-      child: ListView.builder(
-          itemCount: _achievements.length,
-          itemBuilder: ((context, index) {
-            return Padding(
-              padding: EdgeInsets.all(10 * grw(context)),
-              child: _renderAchievement(index),
-            );
-          })));
+  Widget get _renderAchievements => Wrap(
+        children: _achievements
+            .map((e) => Padding(
+                  padding: EdgeInsets.all(10 * grw(context)),
+                  child: _renderAchievement(e),
+                ))
+            .toList(),
+      );
 
-  Widget _renderAchievement(int index) {
-    final achievement = _achievements[index];
+  Widget _renderAchievement(Achievement achievement) {
     final isGreyOut = !_user.achievementsId.contains(achievement.id);
     return GestureDetector(
         onTap: () {
@@ -126,21 +125,27 @@ class _UserInfoState extends State<UserInfoPage> with StateAddition {
         child: Container(
             alignment: Alignment.center,
             height: 200 * grh(context),
-            foregroundDecoration: isGreyOut
-                ? const BoxDecoration(
-                    color: AppColors.grey,
-                    backgroundBlendMode: BlendMode.saturation,
-                  )
-                : null,
             decoration: BoxDecoration(
-                border: Border.all(color: AppColors.blue),
+                border: Border.all(
+                    color: isGreyOut ? AppColors.grey : AppColors.blue),
                 borderRadius: BorderRadius.circular(20)),
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Text(
-                achievement.title,
-                style: context.themeData.textTheme.headline1
-                    ?.copyWith(color: AppColors.blue),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    achievement.title,
+                    style: context.themeData.textTheme.headline1?.copyWith(
+                        color: isGreyOut ? AppColors.grey : AppColors.blue),
+                  ),
+                  isGreyOut
+                      ? const SizedBox()
+                      : const Icon(
+                          Icons.verified,
+                          color: AppColors.blue,
+                        )
+                ],
               ),
               Padding(
                   padding: EdgeInsets.only(top: 10 * grh(context)),
